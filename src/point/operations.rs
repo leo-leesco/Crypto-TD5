@@ -1,8 +1,13 @@
-use std::ops::{AddAssign, MulAssign};
+use std::ops::{AddAssign, Mul, MulAssign};
 
-use primitive_types::{U256, U512};
+use primitive_types::U256;
 
-use crate::{D, P};
+use crate::{
+    modulo::{add_modulo, mul_modulo, sub_modulo},
+    D, P,
+};
+
+use super::{Point, ZERO};
 
 impl AddAssign<Self> for Point {
     fn add_assign(&mut self, rhs: Self) {
@@ -43,12 +48,29 @@ impl MulAssign<U256> for Point {
     /// this is not a constant time scalar multiplication
     fn mul_assign(&mut self, rhs: U256) {
         let mut p = *self;
+        *self = ZERO;
         for i in (0..rhs.bits()).rev() {
             if rhs.bit(i) {
                 *self += p;
             }
             p += p;
         }
+    }
+}
+
+impl Mul<U256> for Point {
+    type Output = Self;
+    /// this is not a constant time scalar multiplication
+    fn mul(self, rhs: U256) -> Self::Output {
+        let mut p = self;
+        let mut q = ZERO;
+        for i in (0..rhs.bits()).rev() {
+            if rhs.bit(i) {
+                q += p;
+            }
+            p += p;
+        }
+        q
     }
 }
 
@@ -59,4 +81,9 @@ impl PartialEq for Point {
         (mul_modulo(self.X, other.Z, P) == mul_modulo(other.X, self.Z, P))
             && (mul_modulo(self.Y, other.Z, P) == mul_modulo(other.Y, self.Z, P))
     }
+}
+
+/// aP+bQ
+pub fn multiexp(a: U256, p: Point, b: U256, q: Point) -> Point {
+    todo!()
 }
