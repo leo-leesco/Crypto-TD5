@@ -4,14 +4,6 @@ use primitive_types::U256;
 use rand::Rng;
 use TD5::{hash::sha512, point::G};
 
-fn secret_expand(secret: [u8; 32]) -> (U256, U256) {
-    let hash = sha512(secret);
-    let mut a = U256::from_little_endian(&hash[..32]);
-    a &= (U256::one() << 254) - U256([8, 0, 0, 0]);
-    a |= U256::one() << 254;
-    (a, U256::from_little_endian(&hash[32..]))
-}
-
 fn secret_to_public(secret: [u8; 32]) -> U256 {
     let (a, _) = secret_expand(secret);
     (G * a).compress()

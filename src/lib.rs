@@ -40,3 +40,4 @@ const INV_M1: U256 = U256([
 pub mod hash;
 mod modulo;
 pub mod point;
+pub mod secret;
