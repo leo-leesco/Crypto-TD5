@@ -23,8 +23,7 @@ fn verify(pk: [u8; 32], message: &[u8], signature: [u8; 64]) -> bool {
     point_public_message.extend(message);
 
     let h = sha512_mod_group_order(point_public_message);
-    r == multiexp(s, G, Q - h, a) // since we did not implement negative
-                                  // multiplication, we complement to Q, which is the group order
+    r == multiexp(s, G, h, -a)
 }
 
 fn main() {

@@ -1,4 +1,4 @@
-use std::ops::{Add, AddAssign, Mul, MulAssign};
+use std::ops::{Add, AddAssign, Mul, MulAssign, Neg};
 
 use primitive_types::U256;
 
@@ -132,4 +132,15 @@ pub fn multiexp(a: U256, p: Point, b: U256, q: Point) -> Point {
             }
         }
     })
+}
+
+impl Neg for Point {
+    type Output = Self;
+    fn neg(self) -> Self::Output {
+        Self {
+            X: P - self.X,
+            Z: P - self.Z,
+            ..self
+        }
+    }
 }
