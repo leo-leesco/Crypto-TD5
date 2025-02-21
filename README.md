@@ -16,13 +16,10 @@ If you want the optimized version, run `cargo build --release`, and the executab
 
 - the path to the datafile
 - the path to `prefix.sk`
-- the path to `prefix.pk`
+- the path to `sigfile`
 
 `verify` expects :
-```
-test
-```
-- the path to the sigfile
+- the path to `sigfile`
 - the path to `prefix.pk`
 
 ## Theoretical framework

@@ -22,7 +22,7 @@ const D: U256 = U256([
 
 /// q = 2**252 + 27742317777372353535851937790883648493
 ///   = 0x1000000000000000 0000000000000000 14def9dea2f79cd6 5812631a5cf5d3ed
-const Q: U256 = U256([
+pub const Q: U256 = U256([
     0x5812631a5cf5d3ed,
     0x14def9dea2f79cd6,
     0,
@@ -38,6 +38,6 @@ const INV_M1: U256 = U256([
 ]);
 
 pub mod hash;
-mod modulo;
+pub mod modulo;
 pub mod point;
 pub mod secret;
