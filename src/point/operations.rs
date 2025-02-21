@@ -1,4 +1,4 @@
-use std::ops::{AddAssign, Mul, MulAssign};
+use std::ops::{Add, AddAssign, Mul, MulAssign};
 
 use primitive_types::U256;
 
@@ -36,6 +36,42 @@ impl AddAssign<Self> for Point {
         let g = add_modulo(b, a, P);
         let h = add_modulo(d, c, P);
         *self = Self {
+            X: mul_modulo(e, f, P),
+            Y: mul_modulo(g, h, P),
+            Z: mul_modulo(f, g, P),
+            T: mul_modulo(e, h, P),
+        }
+    }
+}
+
+impl Add<Self> for Point {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output {
+        let a = mul_modulo(
+            sub_modulo(self.Y, self.X, P),
+            sub_modulo(rhs.Y, rhs.X, P),
+            P,
+        );
+        let b = mul_modulo(
+            add_modulo(self.Y, self.X, P),
+            add_modulo(rhs.Y, rhs.X, P),
+            P,
+        );
+        let c = mul_modulo(
+            mul_modulo(U256([2, 0, 0, 0]), D, P),
+            mul_modulo(self.T, rhs.T, P),
+            P,
+        );
+        let d = mul_modulo(
+            mul_modulo(U256([2, 0, 0, 0]), D, P),
+            mul_modulo(self.Z, rhs.Z, P),
+            P,
+        );
+        let e = sub_modulo(b, a, P);
+        let f = sub_modulo(d, c, P);
+        let g = add_modulo(b, a, P);
+        let h = add_modulo(d, c, P);
+        Self {
             X: mul_modulo(e, f, P),
             Y: mul_modulo(g, h, P),
             Z: mul_modulo(f, g, P),
@@ -85,5 +121,15 @@ impl PartialEq for Point {
 
 /// aP+bQ
 pub fn multiexp(a: U256, p: Point, b: U256, q: Point) -> Point {
-    todo!()
+    let t = (ZERO, p, q, p + q);
+    (0..256).rev().fold(ZERO, |acc, i| {
+        acc * U256([2, 0, 0, 0]) + {
+            match (a.bit(i), b.bit(i)) {
+                (false, false) => t.0,
+                (true, false) => t.1,
+                (false, true) => t.2,
+                (true, true) => t.3,
+            }
+        }
+    })
 }
