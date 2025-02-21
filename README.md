@@ -10,7 +10,7 @@ If you want the optimized version, run `cargo build --release`, and the executab
 
 ## Requirements
 
-`keygen` expects a string.
+`keygen` expects a filename, named `prefix`, and writes to `prefix.sk` and `prefix.pk`.
 
 `sign` expects :
 

@@ -37,5 +37,6 @@ const INV_M1: U256 = U256([
     0x2b8324804fc1df0b,
 ]);
 
+pub mod hash;
 mod modulo;
 pub mod point;
