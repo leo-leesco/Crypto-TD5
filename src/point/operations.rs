@@ -139,7 +139,7 @@ impl Neg for Point {
     fn neg(self) -> Self::Output {
         Self {
             X: P - self.X,
-            Z: P - self.Z,
+            T: P - self.T,
             ..self
         }
     }
