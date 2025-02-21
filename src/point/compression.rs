@@ -34,7 +34,7 @@ fn recover_x(y: U256, sign: bool) -> U256 {
 }
 
 impl Point {
-    fn compress(self) -> U256 {
+    pub fn compress(self) -> U256 {
         let zinv = inv_modulo(self.Z, P);
         let x = mul_modulo(self.X, zinv, P);
         let y = mul_modulo(self.Y, zinv, P);
