@@ -41,7 +41,7 @@ impl Point {
         y | ((x & U256::one()) << 255)
     }
 
-    fn decompress(mut y: U256) -> Self {
+    pub fn decompress(mut y: U256) -> Self {
         let sign = y >> 255 == U256::one();
         y &= (U256::one() << 255) - U256::one();
         let x = recover_x(y, sign);

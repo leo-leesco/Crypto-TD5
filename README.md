@@ -12,15 +12,13 @@ If you want the optimized version, run `cargo build --release`, and the executab
 
 `keygen` expects a filename, named `prefix`, and writes to `prefix.sk` and `prefix.pk`.
 
-`sign` expects :
+`sign` and `verify` expect :
 
-- the path to the datafile
 - the path to `prefix.sk`
+- the path to `datafile`
 - the path to `sigfile`
 
-`verify` expects :
-- the path to `sigfile`
-- the path to `prefix.pk`
+`verify` prints `ACCEPT` or `REJECT` to `stdout`.
 
 ## Theoretical framework
 
